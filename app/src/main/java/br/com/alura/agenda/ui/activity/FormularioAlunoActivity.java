@@ -8,10 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import java.util.List;
+
 import br.com.alura.agenda.R;
 import br.com.alura.agenda.database.AgendaDatabase;
 import br.com.alura.agenda.database.dao.AlunoDAO;
+import br.com.alura.agenda.database.dao.TelefoneDAO;
 import br.com.alura.agenda.model.Aluno;
+import br.com.alura.agenda.model.Telefone;
+import br.com.alura.agenda.model.TipoTelefone;
 
 import static br.com.alura.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
 
@@ -25,6 +30,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private EditText campoEmail;
     private AlunoDAO dao;
     private Aluno aluno;
+    private TelefoneDAO telefoneDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         carregaAluno();
         AgendaDatabase database = AgendaDatabase.getInstance(this);
         dao = database.getRoomAlunoDAO();
+        telefoneDAO = database.getTelefoneDAO();
     }
 
     @Override
@@ -66,9 +73,19 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void preencheCampos() {
         campoNome.setText(aluno.getNome());
-        campoTelefoneCelular.setText(aluno.getTelefoneCelular());
-        campoTelefoneFixo.setText(aluno.getTelefoneFixo());
         campoEmail.setText(aluno.getEmail());
+
+        List<Telefone> telefonesDoAluno = telefoneDAO.getTodosTelefonesDoAluno(aluno.getId());
+
+        for (Telefone telefone: telefonesDoAluno){
+            if(telefone.getTipoTelefone() == TipoTelefone.FIXO){
+                campoTelefoneFixo.setText(telefone.getNumero());
+            }else{
+                campoTelefoneCelular.setText(telefone.getNumero());
+            }
+        }
+//        campoTelefoneCelular.setText(aluno.getTelefoneCelular());
+//        campoTelefoneFixo.setText(aluno.getTelefoneFixo());
     }
 
     private void finalizaFormulario() {
@@ -76,7 +93,12 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         if (aluno.temIdValido()) {
             dao.edita(aluno);
         } else {
-            dao.salva(aluno);
+            int alunoId = dao.salva(aluno).intValue();
+            String numeroFixo = campoTelefoneFixo.getText().toString();
+            Telefone telefoneFixo = new Telefone(numeroFixo, TipoTelefone.FIXO, alunoId);
+            String numeroCelular = campoTelefoneCelular.getText().toString();
+            Telefone telefoneCelular = new Telefone(numeroCelular, TipoTelefone.CELULAR, alunoId);
+            telefoneDAO.salva(telefoneFixo,telefoneCelular);
         }
         finish();
     }
@@ -90,13 +112,13 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void preencheAluno() {
         String nome = campoNome.getText().toString();
-        String telefoneCelular = campoTelefoneCelular.getText().toString();
-        String telefoneFixo = campoTelefoneFixo.getText().toString();
         String email = campoEmail.getText().toString();
 
+
+
         aluno.setNome(nome);
-        aluno.setTelefoneCelular(telefoneCelular);
-        aluno.setTelefoneFixo(telefoneFixo);
+//        aluno.setTelefoneCelular(telefoneCelular);
+//        aluno.setTelefoneFixo(telefoneFixo);
         aluno.setEmail(email);
     }
 }

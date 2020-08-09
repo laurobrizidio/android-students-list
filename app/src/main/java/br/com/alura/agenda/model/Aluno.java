@@ -12,10 +12,7 @@ public class Aluno implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id = 0;
-
     private String nome;
-    private String telefoneCelular;
-    private String telefoneFixo;
     private String email = "";
     private Calendar momentoDeCadastro = Calendar.getInstance();
 
@@ -26,20 +23,12 @@ public class Aluno implements Serializable {
         this.nome = nome;
     }
 
-    public void setTelefoneCelular(String telefoneCelular) {
-        this.telefoneCelular = telefoneCelular;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
     public String getNome() {
         return nome;
-    }
-
-    public String getTelefoneCelular() {
-        return telefoneCelular;
     }
 
     public String getEmail() {
@@ -49,7 +38,7 @@ public class Aluno implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return nome + " - " + telefoneCelular;
+        return nome ;
     }
 
     public void setId(int id) {
@@ -70,14 +59,6 @@ public class Aluno implements Serializable {
 
     public Calendar getMomentoDeCadastro() {
         return momentoDeCadastro;
-    }
-
-    public String getTelefoneFixo() {
-        return telefoneFixo;
-    }
-
-    public void setTelefoneFixo(String telefoneFixo) {
-        this.telefoneFixo = telefoneFixo;
     }
 
 
