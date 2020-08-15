@@ -19,7 +19,7 @@ public class Telefone {
             onDelete = ForeignKey.CASCADE)
     private int alunoId;
 
-    public Telefone(String numero, TipoTelefone TipoTelefone, int alunoId) {
+    public Telefone(String numero, TipoTelefone TipoTelefone) {
         this.numero = numero;
         this.TipoTelefone = TipoTelefone;
         this.alunoId = alunoId;
