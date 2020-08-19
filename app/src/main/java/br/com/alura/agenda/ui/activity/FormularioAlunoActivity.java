@@ -94,16 +94,22 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
         if (aluno.temIdValido()) {
             editAluno(telefoneFixo, telefoneCelular);
+
         } else {
             saveAluno(telefoneFixo, telefoneCelular);
         }
         finish();
     }
 
+    private void vinculaAlunoComTelefone(Telefone telefoneCelular, Telefone telefoneFixo, int alunoId) {
+        telefoneCelular.setAlunoId(alunoId);
+        telefoneFixo.setAlunoId(alunoId);
+    }
+
     private void saveAluno(Telefone telefoneFixo, Telefone telefoneCelular) {
         int alunoId = dao.salva(aluno).intValue();
-        telefoneCelular.setId(alunoId);
-        telefoneFixo.setAlunoId(alunoId);
+        System.out.println("Aluno ID - " + alunoId);
+        vinculaAlunoComTelefone(telefoneFixo,telefoneCelular,alunoId);
         telefoneDAO.salva(telefoneFixo,telefoneCelular);
     }
 
@@ -114,6 +120,8 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     }
 
     private void atualizaIds(Telefone telefoneFixo, Telefone telefoneCelular) {
+
+        vinculaAlunoComTelefone(telefoneCelular,telefoneFixo,aluno.getId());
         for (Telefone telefone :
                 todosTelefonesDoAluno) {
             if(telefone.getTipoTelefone() == TipoTelefone.FIXO) {
