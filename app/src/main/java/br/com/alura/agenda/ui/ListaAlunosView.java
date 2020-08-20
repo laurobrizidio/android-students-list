@@ -41,12 +41,12 @@ public class ListaAlunosView {
     }
 
     public void atualizaAlunos() {
-        adapter.atualiza(dao.todos());
+        new BuscaAlunosTask(dao,adapter).execute();
     }
 
     private void remove(Aluno aluno) {
-        dao.remove(aluno);
-        adapter.remove(aluno);
+        new RemoveAlunosTask(dao,adapter,aluno).execute();
+
     }
 
     public void configuraAdapter(ListView listaDeAlunos) {
