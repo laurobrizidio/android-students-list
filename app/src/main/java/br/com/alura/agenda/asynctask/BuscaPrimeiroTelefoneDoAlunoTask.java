@@ -1,7 +1,6 @@
-package br.com.alura.agenda.ui.adapter;
+package br.com.alura.agenda.asynctask;
 
 import android.os.AsyncTask;
-import android.widget.TextView;
 
 import br.com.alura.agenda.database.dao.TelefoneDAO;
 import br.com.alura.agenda.model.Telefone;
@@ -25,20 +24,12 @@ public class BuscaPrimeiroTelefoneDoAlunoTask extends AsyncTask<Void,Void, Telef
     @Override
     protected Telefone doInBackground(Void... voids) {
 
-        Telefone primeiroTelefoneDoAluno = dao.getPrimeiroTelefoneDoAluno(alunoId);
-        return primeiroTelefoneDoAluno;
+        return dao.getPrimeiroTelefoneDoAluno(alunoId);
     }
 
     @Override
     protected void onPostExecute(Telefone primeiroTelefone) {
         super.onPostExecute(primeiroTelefone);
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-//        campoTelefone.setText(primeiroTelefone.getNumero());
         listener.quandoEncontrado(primeiroTelefone);
 
     }

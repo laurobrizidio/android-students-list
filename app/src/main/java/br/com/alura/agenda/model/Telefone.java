@@ -22,7 +22,6 @@ public class Telefone {
     public Telefone(String numero, TipoTelefone TipoTelefone) {
         this.numero = numero;
         this.TipoTelefone = TipoTelefone;
-        this.alunoId = alunoId;
     }
 
     public int getAlunoId() {
